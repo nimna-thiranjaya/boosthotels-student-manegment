@@ -6,7 +6,7 @@ const constants = {
   USER: {
     ROLES: {
       ADMIN: "admin",
-      USER: "user",
+      STUDENT: "student",
     },
   },
 };

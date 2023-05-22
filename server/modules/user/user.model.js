@@ -41,7 +41,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: [true, "User role is required!"],
       enum: {
-        values: [constants.USER.ROLES.ADMIN, constants.USER.ROLES.USER],
+        values: [constants.USER.ROLES.ADMIN, constants.USER.ROLES.STUDENT],
         message: "Valid role is required!",
       },
     },
