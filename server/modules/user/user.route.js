@@ -34,4 +34,19 @@ UserRouter.patch(
   authMiddleware.authorize([constants.USER.ROLES.ADMIN]),
   userController.UpdateUserById
 );
+
+UserRouter.get(
+  "/getStudentById/:id",
+  authMiddleware.authorize([constants.USER.ROLES.ADMIN]),
+  userController.GetStudentById
+);
+
+UserRouter.delete(
+  "/deleteProfile",
+  authMiddleware.authorize([
+    constants.USER.ROLES.STUDENT,
+    constants.USER.ROLES.ADMIN,
+  ]),
+  userController.DeleteProfile
+);
 module.exports = UserRouter;

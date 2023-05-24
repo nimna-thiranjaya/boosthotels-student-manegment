@@ -174,10 +174,65 @@ const UpdateUserById = async (req, res) => {
   }
 };
 
+//get student by id
+const GetStudentById = async (req, res) => {
+  const studentID = req.params.id;
+
+  const student = await UserServices.findById(studentID);
+
+  if (!student) {
+    throw new NotFoundError("Student not found!");
+  }
+
+  return res.status(StatusCodes.OK).json({
+    student,
+  });
+};
+
+//Delete user profile
+const DeleteProfile = async (req, res) => {
+  const auth = req.auth;
+
+  const user = await UserServices.findById(auth.id);
+
+  if (!user) {
+    throw new NotFoundError("User not found!");
+  }
+
+  //start mongoose default session to handle transactions
+  const session = await startSession();
+
+  try {
+    //start transaction
+    session.startTransaction();
+
+    //delete user profile
+    await UserServices.findByIdAndDelete(auth.id, session);
+
+    //delete auth
+    await AuthServices.findByIdAndDelete(auth.id, session);
+
+    //commit transaction
+    await session.commitTransaction();
+
+    return res.status(StatusCodes.OK).json({
+      message: "User deleted successfully",
+    });
+  } catch (err) {
+    //abort transaction
+    await session.abortTransaction();
+    throw err;
+  } finally {
+    //end session
+    session.endSession();
+  }
+};
 module.exports = {
   CreateUser,
   GetAllStudents,
   GetUserProfile,
   DeleteUserById,
   UpdateUserById,
+  GetStudentById,
+  DeleteProfile,
 };

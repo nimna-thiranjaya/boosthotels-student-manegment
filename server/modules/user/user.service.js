@@ -5,7 +5,7 @@ const save = async (user, session) => {
 };
 
 const find = async (obj) => {
-  return await User.find(obj);
+  return await User.find(obj).sort({ updatedAt: -1 });
 };
 
 const findById = async (id, session) => {
